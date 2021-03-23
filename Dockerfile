@@ -1,4 +1,4 @@
-FROM quay.io/app-sre/ubi8-ubi
+FROM quay.io/centos/centos
 
 # This image provides a Node.JS environment you can use to run your Node.JS
 # applications.
@@ -66,14 +66,15 @@ RUN set -x && \
     rm -rf /tmp/*
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
-COPY ./s2i/bin/ $STI_SCRIPTS_PATH
+COPY ./s2i/bin/ /usr/local/s2i
+
+
 
 # Copy extra files to the image.
-COPY ./root/ /
+COPY ./root/ /opt/app-root/etc
 
 # Drop the root user and make the content of /opt/app-root owned by user 1001
-RUN chown -R 1001:0 ${APP_ROOT} && chmod -R ug+rwx ${APP_ROOT} && \
-    rpm-file-permissions
+RUN chown -R 1001:0 /opt/app-root/etc && chmod -R ug+rwx /opt/app-root/etc 
 
 USER 1001
 
