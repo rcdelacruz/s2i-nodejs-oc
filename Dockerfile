@@ -66,15 +66,15 @@ RUN set -x && \
     rm -rf /tmp/*
 
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
-COPY ./s2i/bin/ /usr/local/s2i
+COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
 
 
 # Copy extra files to the image.
-COPY ./root/ /opt/app-root/etc
+COPY ./root/ $APP_ROOT
 
 # Drop the root user and make the content of /opt/app-root owned by user 1001
-RUN chown -R 1001:0 /opt/app-root/etc && chmod -R ug+rwx /opt/app-root/etc 
+RUN chown -R 1001:0 $APP_ROOT && chmod -R ug+rwx $APP_ROOT 
 
 USER 1001
 
